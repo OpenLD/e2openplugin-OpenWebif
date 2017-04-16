@@ -2192,6 +2192,9 @@ msgstr ""
 msgid "OpenWebif Configuration"
 msgstr "Configurazione OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Smart services renaming for XBMC"
 #~ msgstr "Rinomina canali per XBMC"
 

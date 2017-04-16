@@ -2196,6 +2196,9 @@ msgstr "Kódovanie znakov pre dáta EPG"
 msgid "OpenWebif Configuration"
 msgstr "Nastavenie OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Zmazať film"
 

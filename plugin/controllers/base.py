@@ -236,6 +236,27 @@ class BaseController(resource.Resource):
 				return opath
 		return None
 
+	def ncamconfPath(self):
+		# Find and parse running ncam
+		opath = None
+		owebif = None
+		oport = None
+		if fileExists("/tmp/.ncam/ncam.version"):
+			data = open("/tmp/.ncam/ncam.version", "r").readlines()
+			for i in data:
+				if "configdir:" in i.lower():
+					opath = i.split(":")[1].strip() + "/ncam.conf"
+				elif "web interface support:" in i.lower():
+					owebif = i.split(":")[1].strip()
+				elif "webifport:" in i.lower():
+					oport = i.split(":")[1].strip()
+				else:
+					continue
+		if owebif == "yes" and oport is not "0" and opath is not None:
+			if fileExists(opath):
+				return opath
+		return None
+
 	def prepareMainTemplate(self, request):
 		# here will be generated the dictionary for the main template
 		ret = getCollapsedMenus()
@@ -285,6 +306,21 @@ class BaseController(resource.Resource):
 			if port is not None:
 				url = "%s://%s:%s" % (proto, request.getRequestHostname(), port)
 				extras.append({ 'key': url, 'description': _("OSCam Webinterface"), 'nw':'1'})
+
+		self.ncamconf = self.ncamconfPath()
+		if self.ncamconf is not None:
+			data = open(self.ncamconf, "r").readlines()
+			proto = "http"
+			port = None
+			for i in data:
+				if "httpport" in i.lower():
+					port = i.split("=")[1].strip()
+					if port[0] == '+':
+						proto = "https"
+						port = port[1:]
+			if port is not None:
+				url = "%s://%s:%s" % (proto, request.getRequestHostname(), port)
+				extras.append({ 'key': url, 'description': _("NCam Webinterface"), 'nw':'1'})
 
 		try:
 			from Plugins.Extensions.AutoTimer.AutoTimer import AutoTimer

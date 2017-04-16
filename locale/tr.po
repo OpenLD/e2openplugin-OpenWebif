@@ -2192,5 +2192,8 @@ msgstr ""
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif Yapılandırma"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Filmi Sil"

@@ -2198,6 +2198,9 @@ msgstr "Тип кодування тексту для даних EPG"
 msgid "OpenWebif Configuration"
 msgstr "Налаштування OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Afterevent"
 #~ msgstr "Після події"
 

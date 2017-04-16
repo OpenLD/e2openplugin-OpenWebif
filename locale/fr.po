@@ -2201,6 +2201,9 @@ msgstr "Caractère d'encodage pour les données EPG"
 msgid "OpenWebif Configuration"
 msgstr "Configuration OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Smart services renaming for XBMC"
 #~ msgstr "Renommer les services intelligement pour XBMC"
 

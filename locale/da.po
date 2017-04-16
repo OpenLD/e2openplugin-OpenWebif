@@ -2208,6 +2208,9 @@ msgstr "Karaktersæt enkodning til EPG data"
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif indstillinger"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Afterevent"
 #~ msgstr "Efter begivenheden"
 

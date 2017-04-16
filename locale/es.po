@@ -2200,6 +2200,9 @@ msgstr "Codificación de caracteres para los datos del EPG"
 msgid "OpenWebif Configuration"
 msgstr "Configuración OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Afterevent"
 #~ msgstr "Tras el evento"
 

@@ -2191,6 +2191,9 @@ msgstr "Zeichenkodierung der EPG Daten"
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif-Konfiguration"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Multi EPG Mode"
 #~ msgstr "Multi EPG Modus"
 

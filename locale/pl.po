@@ -2201,6 +2201,9 @@ msgstr "Kodowanie znaków dla danych EPG"
 msgid "OpenWebif Configuration"
 msgstr "Konfiguracja OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Usuń nagranie"
 

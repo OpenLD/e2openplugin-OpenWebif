@@ -2189,3 +2189,6 @@ msgstr ""
 #: plugin/plugin.py:212
 msgid "OpenWebif Configuration"
 msgstr ""
+
+msgid "NCam Webinterface"
+msgstr ""

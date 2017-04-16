@@ -2196,6 +2196,9 @@ msgstr "Teckenkodning av EPG-data"
 msgid "OpenWebif Configuration"
 msgstr "Inställningar för OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Afterevent"
 #~ msgstr "Tillämpa avslutande aktiviteter"
 

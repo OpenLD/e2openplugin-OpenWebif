@@ -2194,6 +2194,9 @@ msgstr "EPG 编码特征"
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif 配置"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "删除电影"
 

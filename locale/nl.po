@@ -2198,6 +2198,9 @@ msgstr "Karaktercodering voor EPG-data"
 msgid "OpenWebif Configuration"
 msgstr "Openwebif configuratie"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Film verwijderen"
 

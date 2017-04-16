@@ -2199,6 +2199,9 @@ msgstr "Тип кодировки текста для данных EPG"
 msgid "OpenWebif Configuration"
 msgstr "Настройки OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Удалить видео"
 

@@ -2198,3 +2198,6 @@ msgstr "EPG naudojamų šriftų koduotė"
 #: plugin/plugin.py:212
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif konfigūravimas"
+
+msgid "NCam Webinterface"
+msgstr ""

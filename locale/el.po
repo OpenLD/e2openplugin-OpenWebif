@@ -2202,6 +2202,9 @@ msgstr "Κωδικοποίηση χαρακτήρων για τα δεδομέν
 msgid "OpenWebif Configuration"
 msgstr "Ρυθμίσεις OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Delete Movie"
 #~ msgstr "Διαγραφή Ταινίας"
 

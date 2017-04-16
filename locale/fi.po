@@ -2196,6 +2196,9 @@ msgstr "Ohjelmaoppaan merkistökoodaus"
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif-asetukset"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Multi EPG Mode"
 #~ msgstr "Multi EPG Modus"
 

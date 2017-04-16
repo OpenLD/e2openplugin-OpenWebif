@@ -2194,6 +2194,9 @@ msgstr "EPG andmete tähemärgistik"
 msgid "OpenWebif Configuration"
 msgstr "OpenWebif seadistus"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Driver date"
 #~ msgstr "Ajurite väljalase"
 

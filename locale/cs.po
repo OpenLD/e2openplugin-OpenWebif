@@ -2231,6 +2231,9 @@ msgstr "Kódování znaků pro EPG data"
 msgid "OpenWebif Configuration"
 msgstr "Nastavení OpenWebif"
 
+msgid "NCam Webinterface"
+msgstr ""
+
 #~ msgid "Afterevent"
 #~ msgstr "Po události"
 

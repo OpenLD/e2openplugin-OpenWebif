@@ -16,7 +16,7 @@ def addCollapsedMenu(name):
 
 	config.OpenWebif.webcache.collapsedmenus.value = "|".join(tags).strip("|")
 	config.OpenWebif.webcache.collapsedmenus.save()
-	
+
 	return {
 		"result": True
 	}
@@ -97,7 +97,7 @@ def getJsonFromConfig(cnf):
 			choices = []
 			for choice in cnf.choices.choices:
 				choices.append((choice, _(choice)))
-				
+
 		return {
 			"result": True,
 			"type": "select",

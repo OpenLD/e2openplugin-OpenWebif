@@ -4,7 +4,7 @@ from Tools.Directories import fileExists, resolveFilename, SCOPE_PLAYLIST
 from Components.FileList import FileList
 from enigma import eServiceReference
 
-import os 
+import os
 import fnmatch
 
 def getMpInstance(session):

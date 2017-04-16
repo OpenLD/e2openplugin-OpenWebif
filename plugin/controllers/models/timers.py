@@ -229,7 +229,7 @@ def addTimerByEventId(session, eventid, serviceref, justplay, dirname, tags, vps
 	)
 
 # NEW editTimer function to prevent delete + add on change
-# !!! This new function must be tested !!!! 
+# !!! This new function must be tested !!!!
 def editTimer(session, serviceref, begin, end, name, description, disabled, justplay, afterEvent, dirname, tags, repeated, channelOld, beginOld, endOld, vpsinfo, always_zap):
 	# TODO: exception handling
 	channelOld_str =  ':'.join(str(channelOld).split(':')[:11])
@@ -292,7 +292,7 @@ def editTimer(session, serviceref, begin, end, name, description, disabled, just
 						"realbegin":strftime("%d.%m.%Y %H:%M", (localtime(float(conflict.begin)))),
 						"realend":strftime("%d.%m.%Y %H:%M", (localtime(float(conflict.end))))
 					})
-				
+
 				return {
 					"result": False,
 					"message": _("Timer '%s' not saved while Conflict") % name,
@@ -413,7 +413,7 @@ def recordNow(session, infinite):
 		begin,
 		end,
 		name,
-		description, 
+		description,
 		eit,
 		False,
 		False,
@@ -461,7 +461,7 @@ def tvbrowser(session, request):
 		if (request.args['disabled'][0] == "1"):
 			disabled = True
 
-	justplay = False 
+	justplay = False
 	if 'justplay' in request.args:
 		if (request.args['justplay'][0] == "1"):
 			justplay = True
@@ -480,7 +480,7 @@ def tvbrowser(session, request):
 		location = "/hdd/movie/"
 
 	begin = int(mktime((int(request.args['syear'][0]), int(request.args['smonth'][0]), int(request.args['sday'][0]), int(request.args['shour'][0]), int(request.args['smin'][0]), 0, 0, 0, -1)))
-	end = int(mktime((int(request.args['syear'][0]), int(request.args['smonth'][0]), int(request.args['sday'][0]), int(request.args['ehour'][0]), int(request.args['emin'][0]), 0, 0, 0, -1)))	
+	end = int(mktime((int(request.args['syear'][0]), int(request.args['smonth'][0]), int(request.args['sday'][0]), int(request.args['ehour'][0]), int(request.args['emin'][0]), 0, 0, 0, -1)))
 
 	if end < begin:
 		end += 86400
@@ -498,8 +498,8 @@ def tvbrowser(session, request):
 
 	if request.args['sRef'][0] is None:
 		return {
-		 "result": False, 
-		 "message": _("Missing requesteter: sRef") 
+		 "result": False,
+		 "message": _("Missing requesteter: sRef")
 		}
 	else:
 		takeApart = unquote(request.args['sRef'][0]).decode('utf-8', 'ignore').encode('utf-8').split('|')
@@ -525,7 +525,7 @@ def tvbrowser(session, request):
 		}
 
 def getPowerTimer(session):
-	
+
 	try:
 		from PowerTimer import TIMERTYPE ,AFTEREVENT
 
@@ -768,7 +768,7 @@ def setSleepTimer(session, time, action, enabled):
 						timer.end = end
 					done = True
 					break
-			
+
 			if done:
 				return {
 					"result": True,
@@ -825,10 +825,8 @@ def getVPSChannels(session):
 				"result": False,
 				"message": _("Error parsing vps.xml")
 			}
-			
+
 	return {
 			"result": False,
 			"message": _("VPS plugin not found")
 	}
-	
-	

@@ -2,8 +2,8 @@
 
 #LICENCE
 #
-# This File is part of the Webbouqueteditor plugin 
-# and licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported 
+# This File is part of the Webbouqueteditor plugin
+# and licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported
 # License if not stated otherwise in a files head. To view a copy of this license, visit
 # http://creativecommons.org/licenses/by-nc-sa/3.0/ or send a letter to Creative
 # Commons, 559 Nathan Abbott Way, Stanford, California 94305, USA.
@@ -18,7 +18,7 @@ from Screens.InfoBar import InfoBar
 from ServiceReference import ServiceReference
 from Components.ParentalControl import parentalControl
 from re import compile as re_compile
-from Components.NimManager import nimmanager 
+from Components.NimManager import nimmanager
 
 class BouquetEditor(Source):
 
@@ -171,7 +171,7 @@ class BouquetEditor(Source):
 			mutableList = self.getMutableList(eServiceReference(bouquet_root))
 		else:
 			mutableList = self.getMutableBouquetList(mode)
-			
+
 		if ref.valid() and mutableList is not None:
 			if not mutableList.removeService(ref):
 				mutableList.flushChanges()
@@ -318,7 +318,7 @@ class BouquetEditor(Source):
 		if "sRefBefore" in param:
 			if param["sRefBefore"] is not None:
 				sRefBefore = eServiceReference(param["sRefBefore"])
-		bouquet_ref = eServiceReference(sBouquetRef) 
+		bouquet_ref = eServiceReference(sBouquetRef)
 		mutableBouquetList = self.getMutableList(bouquet_ref)
 		cnt = 0
 		while mutableBouquetList:
@@ -351,7 +351,7 @@ class BouquetEditor(Source):
 		if "sBouquetRef" in param:
 			if param["sBouquetRef"] is not None:
 				sBouquetRef =param["sBouquetRef"]
-		cur_ref = eServiceReference(sRef) 
+		cur_ref = eServiceReference(sRef)
 		if cur_ref.flags & eServiceReference.mustDescent:
 			# bouquets or alternatives can be renamed with setListName directly
 			mutableBouquetList = self.getMutableList(cur_ref)
@@ -402,7 +402,7 @@ class BouquetEditor(Source):
 		sCurrentRef = param["sCurrentRef"] #  alternative service
 		if sCurrentRef is None:
 			return (False, _("No current service given!"))
-		cur_ref = eServiceReference(sCurrentRef) 
+		cur_ref = eServiceReference(sCurrentRef)
 		# check if  service is already an alternative
 		if not (cur_ref.flags & eServiceReference.isGroup):
 			# sCurrentRef is not an alternative service yet, so do this and add itself to new alternative liste
@@ -443,7 +443,7 @@ class BouquetEditor(Source):
 		new_param["sRef"] = sRef
 		returnValue = self.addServiceToBouquet(new_param)
 		if returnValue[0]:
-			cur_ref = eServiceReference(sCurrentRef) 
+			cur_ref = eServiceReference(sCurrentRef)
 			cur_service = ServiceReference(cur_ref)
 			name = cur_service.getServiceName()
 			service_ref = ServiceReference(sRef)
@@ -463,7 +463,7 @@ class BouquetEditor(Source):
 				sRef =param["sRef"]
 		if sRef is None:
 			return (False, _("No service given!"))
-		cur_ref = eServiceReference(sRef) 
+		cur_ref = eServiceReference(sRef)
 		# check if  service is an alternative
 		if cur_ref.flags & eServiceReference.isGroup:
 			cur_service = ServiceReference(cur_ref)
@@ -613,7 +613,7 @@ class BouquetEditor(Source):
 					break
 			if check_tar:
 				eDVBDB.getInstance().removeServices()
-				files = []	
+				files = []
 				files += self.getPhysicalFilenamesFromServicereference(eServiceReference('1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.tv" ORDER BY bouquet'))
 				files += self.getPhysicalFilenamesFromServicereference(eServiceReference('1:7:1:0:0:0:0:0:0:0:FROM BOUQUET "bouquets.radio" ORDER BY bouquet'))
 				for bouquetfiles in files:

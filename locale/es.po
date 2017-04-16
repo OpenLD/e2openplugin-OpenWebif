@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: OpenWebif\n"
 "POT-Creation-Date: 2016-11-24 15:30+0100\n"
-"PO-Revision-Date: 2016-11-24 15:30+0100\n"
-"Last-Translator: neoatomic <neoatomic@users.noreply.github.com>\n"
-"Language-Team: Linux-Box\n"
+"PO-Revision-Date: 2017-04-16 04:34+0100\n"
+"Last-Translator: Javier Sayago <admin@lonasdigital.com>\n"
+"Language-Team: OpenLD\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -452,7 +452,7 @@ msgstr "El tmeporizador '%s' se ha eliminado satisfactoriamente"
 #: plugin/controllers/models/timers.py:321
 #: plugin/controllers/models/timers.py:365
 msgid "No matching Timer found"
-msgstr "No se han encontrado coincidencia para el temporizador"
+msgstr "No se han encontrado coincidencias para el temporizador"
 
 #: plugin/controllers/models/timers.py:339
 #, python-format
@@ -484,11 +484,11 @@ msgstr "La lista de temporizadores se ha guardado"
 
 #: plugin/controllers/models/timers.py:394
 msgid "No event found! Not recording!"
-msgstr "No se ha encontrado evento. No se está grabando."
+msgstr "No se encontró un evento. No está grabando."
 
 #: plugin/controllers/models/timers.py:400
 msgid "Instant record for current Event started"
-msgstr "Grabación instantánea iniciada para el evento actual"
+msgstr "Grabación instantánea iniciada para evento actual"
 
 #: plugin/controllers/models/timers.py:409
 msgid "Infinite Instant recording started"
@@ -500,7 +500,7 @@ msgstr "Detectado conflicto entre temporizadores. No se está grabando."
 
 #: plugin/controllers/models/timers.py:502
 msgid "Missing requesteter: sRef"
-msgstr ""
+msgstr "Búsqueda Solicitada: sRef"
 
 #: plugin/controllers/models/timers.py:524
 #, python-format
@@ -777,19 +777,19 @@ msgstr "Favoritos"
 
 #: plugin/local.py:56
 msgid "Box Info"
-msgstr "Información Deco"
+msgstr "Información Receptor"
 
 #: plugin/local.py:57
 msgid "Box"
-msgstr "Decodificador"
+msgstr "Receptor"
 
 #: plugin/local.py:58
 msgid "Box Control"
-msgstr "Control Deco"
+msgstr "Control Receptor"
 
 #: plugin/local.py:59
 msgid "Box Uptime"
-msgstr "Funcionamiento Decodificador"
+msgstr "Funcionamiento Receptor"
 
 #: plugin/local.py:60
 msgid "Brand"
@@ -877,7 +877,7 @@ msgstr ""
 
 #: plugin/local.py:83
 msgid "Distro"
-msgstr "Distribución"
+msgstr "Distro"
 
 #: plugin/local.py:84
 msgid "Dolby"
@@ -1109,19 +1109,19 @@ msgstr "Encendido"
 
 #: plugin/local.py:145
 msgid "Open Source Web Interface for Linux set-top box"
-msgstr "Interfaz Web de Código Abierto para Decodificadores Linux"
+msgstr "Interfaz Web de Código Abierto para Receptores Linux"
 
 #: plugin/local.py:146 plugin/plugin.py:119
 msgid "Show box name in header"
-msgstr "Mostrar nombre del deco en la cabecera"
+msgstr "Mostrar nombre del receptor en la cabecera"
 
 #: plugin/local.py:147 plugin/plugin.py:121
 msgid "Use custom box name"
-msgstr "Usar nombre personalizado para el deco"
+msgstr "Usar nombre personalizado para el receptor"
 
 #: plugin/local.py:148 plugin/plugin.py:123
 msgid "Custom box name"
-msgstr "Nombre personalizado del deco"
+msgstr "Nombre personalizado del receptor"
 
 #: plugin/local.py:149
 msgid "OSD"
@@ -1157,7 +1157,7 @@ msgstr "Radio"
 
 #: plugin/local.py:157
 msgid "Reboot Box"
-msgstr "Reiniciar Deco"
+msgstr "Reiniciar Receptor"
 
 #: plugin/local.py:158
 msgid "Recording Status"
@@ -1853,7 +1853,7 @@ msgstr "Notificar si hay uno similar"
 
 #: plugin/local.py:340
 msgid "Add Autotimer to Tags"
-msgstr "AñadirAutotimer a las etiquetas"
+msgstr "Añadir Autotimer a las etiquetas"
 
 #: plugin/local.py:341
 msgid "Add Name to Tags"
@@ -1869,7 +1869,7 @@ msgstr "Editor"
 
 #: plugin/local.py:347
 msgid "Plain"
-msgstr ""
+msgstr "Simple"
 
 #: plugin/local.py:348
 msgid "Wizzard"

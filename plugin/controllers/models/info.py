@@ -134,7 +134,7 @@ def normalize_ipv6(orig):
 def getAdapterIPv6(ifname):
 	addr = _("IPv4-only kernel")
 	firstpublic = None
-	
+
 	if fileExists('/proc/net/if_inet6'):
 		addr = _("IPv4-only Python/Twisted")
 
@@ -190,10 +190,16 @@ def getViewsPath(file = ""):
 def getPiconPath():
 	if pathExists("/media/usb/picon/"):
 		return "/media/usb/picon/"
-	elif pathExists("/media/cf/picon/"):
-		return "/media/cf/picon/"
 	elif pathExists("/media/hdd/picon/"):
 		return "/media/hdd/picon/"
+	elif pathExists("/media/cf/picon/"):
+		return "/media/cf/picon/"
+	elif pathExists("/media/mmcblk0p1/picon/"):
+		return "/media/mmcblk0p1/picon/"
+	elif pathExists("/media/mmc/picon/"):
+		return "/media/mmc/picon/"
+	elif pathExists("/media/uSDextra/picon/"):
+		return "/media/uSDextra/picon/"
 	elif pathExists("/usr/share/enigma2/picon/"):
 		return "/usr/share/enigma2/picon/"
 	elif pathExists("/picon/"):
@@ -371,7 +377,7 @@ def getInfo(session = None, need_fullinfo = False):
 			free = int((stat.f_bfree/1024) * (stat.f_bsize/1024))
 		else:
 			free = -1
-		
+
 		if free <= 1024:
 			free = "%i %s" % (free,_("MB"))
 		else:
@@ -472,7 +478,7 @@ def getInfo(session = None, need_fullinfo = False):
 									ipaddress = list(tmpaddress)[0][4][0]
 						except:
 							pass
-						
+
 					friendlyaddress = server
 					if ipaddress is not None and not ipaddress == server:
 						friendlyaddress = server + " ("+ ipaddress + ")"
@@ -539,7 +545,7 @@ def getInfo(session = None, need_fullinfo = False):
 				# only one recording
 				if len(timers) == 1:
 					sname = timers[0]
-					
+
 				if sname == '' and s_name != '':
 					sname = s_name
 

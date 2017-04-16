@@ -12,9 +12,9 @@
 from twisted.web import static, resource, http, server
 
 class SRController(resource.Resource):
-	
+
 	rootApi = None
-	
+
 	def __init__(self, session, path = ""):
 		resource.Resource.__init__(self)
 		self.session = session
@@ -23,7 +23,7 @@ class SRController(resource.Resource):
 		except ImportError:
 			print "SerienRecorder plugin not found"
 			return
-		
+
 		(root, childs) = addWebInterfaceForOpenWebInterface()
 		SRController.rootApi = root
 		if childs:

@@ -305,7 +305,7 @@ class WebController(BaseController):
 	def P_movielist(self, request):
 		self.isGZ=True
 		return getMovieList(request.args)
-	
+
 	def P_fullmovielist(self, request):
 		self.isGZ=True
 		return getAllMovies()
@@ -393,7 +393,7 @@ class WebController(BaseController):
 			elif "yes" in mode:
 				vpsplugin_enabled = True
 				vpsplugin_overwrite = True
-		return { 
+		return {
 			"vpsplugin_time":vpsplugin_time,
 			"vpsplugin_overwrite":vpsplugin_overwrite,
 			"vpsplugin_enabled":vpsplugin_enabled
@@ -812,7 +812,7 @@ class WebController(BaseController):
 		event['event']['recording_margin_before'] = config.recording.margin_before.value
 		event['event']['recording_margin_after'] = config.recording.margin_after.value
 		return event
-	
+
 	def P_getcurrent(self, request):
 		info = getCurrentService(self.session)
 		now = getNowNextEpg(info["ref"], 0)
@@ -1169,6 +1169,3 @@ class WebController(BaseController):
 			except Exception, e:
 				pass
 		return {}
-	
-
-

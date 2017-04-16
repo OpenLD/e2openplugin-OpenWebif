@@ -21,7 +21,7 @@ class BQEWebController(BaseController):
 	def __init__(self, session, path = ""):
 		BaseController.__init__(self, path)
 		self.session = session
-	
+
 	def returnResult(self, req, result):
 		if self.isJson:
 			return { "Result": result }
@@ -37,7 +37,7 @@ class BQEWebController(BaseController):
 	<e2state>%s</e2state>
 	<e2statetext>%s</e2statetext>
 </e2simplexmlresult>""" % ('True' if state else 'False', statetext)
-	
+
 	def buildCommand(self, ids, args):
 		paramlist = ids.split(",")
 		list = {}
@@ -313,4 +313,3 @@ class BQEController(BaseController):
 		self.putChild("api", BQEApiController(session))
 		self.putChild('tmp', static.File('/tmp'))
 		self.putChild('uploadrestore', BQEUploadFile(session))
-

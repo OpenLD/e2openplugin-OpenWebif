@@ -25,7 +25,7 @@ def getStream(session, request, m3ufile):
 	currentServiceRef = None
 	if m3ufile == "streamcurrent.m3u":
 		currentServiceRef = session.nav.getCurrentlyPlayingServiceReference()
-		sRef = currentServiceRef.toString() 
+		sRef = currentServiceRef.toString()
 
 	if sRef.startswith("1:134:"):
 		if currentServiceRef is None:
@@ -45,7 +45,7 @@ def getStream(session, request, m3ufile):
 		name = request.args["name"][0]
 		if config.OpenWebif.service_name_for_stream.value:
 			progopt="#EXTINF:-1,%s\n" % name
-	
+
 	portNumber = config.OpenWebif.streamport.value
 	info = getInfo()
 	model = info["model"]
@@ -63,8 +63,8 @@ def getStream(session, request, m3ufile):
 				portNumber = transcoder_port
 		if "port" in request.args:
 			portNumber = request.args["port"][0]
-			
-	# INI use dynamic encoder allocation, and each stream can have diffrent parameters 
+
+	# INI use dynamic encoder allocation, and each stream can have diffrent parameters
 	if machinebuild in ('inihdp', 'hd2400', 'et10000'):
 		transcoder_port = 8001
 		if "device" in request.args :
@@ -143,7 +143,7 @@ def getTS(self, request):
 					portNumber = transcoder_port
 		if "port" in request.args:
 			portNumber = request.args["port"][0]
-			
+
 		# INI use dynamic encoder allocation, and each stream can have diffrent parameters
 		if machinebuild in ('inihdp', 'hd2400', 'et10000'):
 			if "device" in request.args :
@@ -202,16 +202,16 @@ def getStreamSubservices(session, request):
 		services.append({
 			"servicereference": currentServiceRef.toString(),
 			"servicename": ServiceReference(currentServiceRef).getServiceName()
-			}) 
+			})
 		if subservices and subservices.getNumberOfSubservices() != 0:
-			n = subservices and subservices.getNumberOfSubservices()  
+			n = subservices and subservices.getNumberOfSubservices()
 			z = 0
 			while z < n:
 				sub = subservices.getSubservice(z)
 				services.append({
 					"servicereference": sub.toString(),
 					"servicename": sub.getName()
-				}) 
+				})
 				z += 1
 	else:
 		services.append =({

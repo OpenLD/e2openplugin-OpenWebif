@@ -192,15 +192,15 @@ def getMovieList(rargs=None, locations=None):
 
 				filename = '/'.join(serviceref.toString().split("/")[1:])
 				filename = '/'+filename
-				if 'pos' in fields: 
+				if 'pos' in fields:
 					pos = getPosition(filename + '.cuts', Len)
-				
+
 				# get txt
 				name, ext = os.path.splitext(filename)
 				ext = ext.lower()
-				
+
 				txtdesc = ""
-				
+
 				if 'desc' in fields and ext != 'ts':
 					txtfile = name + '.txt'
 					if fileExists(txtfile):
@@ -246,7 +246,7 @@ def getMovieList(rargs=None, locations=None):
 					movie['descriptionExtended'] = unicode(ext,'utf_8', errors='ignore').encode('utf_8', 'ignore')
 				movie['servicename'] = sourceRef.getServiceName().replace('\xc2\x86', '').replace('\xc2\x87', '')
 				movie['recordingtime'] = rtime
-				if 'pos' in fields: 
+				if 'pos' in fields:
 					movie['lastseen'] = pos
 				movieliste.append(movie)
 
@@ -265,7 +265,7 @@ def removeMovie(session, sRef, Force=False):
 	result = False
 	deleted = False
 	message="service error"
-	
+
 	if service is not None:
 		serviceHandler = eServiceCenter.getInstance()
 		offline = serviceHandler.offlineOperations(service.ref)
@@ -314,7 +314,7 @@ def removeMovie(session, sRef, Force=False):
 				result = True
 	else:
 		message="no offline object"
-	
+
 	if result == False:
 		return {
 			"result": False,
@@ -436,7 +436,7 @@ def renameMovie(session, sRef, newname):
 	return _moveMovie (session,sRef,newname=newname)
 
 def getMovieTags(sRef = None, addtag = None, deltag = None):
-	
+
 	if sRef is not None:
 		result = False
 		service = ServiceReference(sRef)
@@ -485,7 +485,7 @@ def getMovieTags(sRef = None, addtag = None, deltag = None):
 			"result": result,
 			"resulttext" : "Recording not found"
 		}
-	
+
 	tags = []
 	wr = False
 	if fileExists(MOVIETAGFILE):
@@ -507,4 +507,3 @@ def getMovieTags(sRef = None, addtag = None, deltag = None):
 		"result": True,
 		"tags": tags
 	}
-

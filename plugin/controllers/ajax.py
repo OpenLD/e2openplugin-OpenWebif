@@ -103,7 +103,7 @@ class AjaxController(BaseController):
 		info = {}
 		info["owiver"] = getOpenWebifVer()
 		return { "info": info }
-	
+
 	def P_boxinfo(self, request):
 		info = getInfo(self.session, need_fullinfo = True)
 		type = getBoxType()
@@ -132,7 +132,7 @@ class AjaxController(BaseController):
 			ev = getSearchEpg(request.args["sstr"][0],None,fulldesc,bouquetsonly)
 			events = sorted(ev["events"], key=lambda ev: ev['begin_timestamp'])
 		at = False
-		if len(events) > 0: 
+		if len(events) > 0:
 			t = getTimers(self.session)
 			timers = t["timers"]
 			try:
@@ -180,13 +180,13 @@ class AjaxController(BaseController):
 		unsort = movies['movies']
 
 		if sorttype == 'name':
-			movies['movies'] = sorted(unsort, key=lambda k: k['eventname']) 
+			movies['movies'] = sorted(unsort, key=lambda k: k['eventname'])
 		elif sorttype == 'named':
-			movies['movies'] = sorted(unsort, key=lambda k: k['eventname'],reverse=True) 
+			movies['movies'] = sorted(unsort, key=lambda k: k['eventname'],reverse=True)
 		elif sorttype == 'date':
-			movies['movies'] = sorted(unsort, key=lambda k: k['recordingtime']) 
+			movies['movies'] = sorted(unsort, key=lambda k: k['recordingtime'])
 		elif sorttype == 'dated':
-			movies['movies'] = sorted(unsort, key=lambda k: k['recordingtime'],reverse=True) 
+			movies['movies'] = sorted(unsort, key=lambda k: k['recordingtime'],reverse=True)
 
 		movies['sort'] = sorttype
 		return movies
@@ -244,7 +244,7 @@ class AjaxController(BaseController):
 			epgmode = request.args["epgmode"][0]
 			if epgmode not in ["tv", "radio"]:
 				epgmode = "tv"
-				
+
 		bouq = getBouquets(epgmode)
 		if "bref" not in request.args.keys():
 			bref = bouq['bouquets'][0][0]
@@ -287,7 +287,7 @@ class AjaxController(BaseController):
 			pass
 		loc = getLocations()
 		ret['locations'] = loc['locations']
-				
+
 		try:
 			from Plugins.SystemPlugins.vps import Vps
 			ret['hasVPS'] = 1
@@ -333,4 +333,3 @@ class AjaxController(BaseController):
 			except StandardError:
 				transcoder_port = 0
 		return {"transcoder_port" : transcoder_port, "vxgenabled" : vxgenabled, "auth" : auth}
-

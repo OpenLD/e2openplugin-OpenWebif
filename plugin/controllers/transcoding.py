@@ -48,7 +48,7 @@ class TranscodingController(resource.Resource):
 			port = config.plugins.transcodingsetup.port
 		except KeyError:
 			return '<?xml version="1.0" encoding="UTF-8" ?><e2simplexmlresult><e2state>false</e2state><e2error>Transcoding Plugin is not installed or your STB does not support transcoding</error></e2simplexmlresult>'
-		
+
 		encoders = config.plugins.transcodingsetup.encodernum.choices
 		if len(request.args):
 			config_changed = False
@@ -109,7 +109,7 @@ class TranscodingController(resource.Resource):
 				config.plugins.transcodingsetup.save()
 
 		str_result = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n<e2configs>\n"
-		
+
 		attr, arg = port, "port"
 		value = str(attr.value)
 		attr_min = str(attr.limits[0][0])
@@ -136,4 +136,3 @@ class TranscodingController(resource.Resource):
 				str_result += "</e2encoder>\n"
 		str_result += "</e2configs>\n"
 		return str_result
-

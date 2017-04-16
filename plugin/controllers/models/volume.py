@@ -26,7 +26,7 @@ def setVolumeUp():
 	ret = getVolumeStatus()
 	ret["message"] = "Volume changed"
 	return ret
-	
+
 def setVolumeDown():
 	owebif_vctrl = VolumeControl.instance
 	owebif_vctrl.volDown()

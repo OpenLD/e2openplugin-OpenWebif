@@ -20,12 +20,12 @@ class renderEvtBlock:
             shortdesc = '<div class="desc">%s</div>' % (event['shortdesc'])
         else:
             shortdesc = ''
-        
+
         if event['timerStatus'] != '':
             timerEventSymbol = '<div class="%s">%s</div>' % (event['timerStatus'], tstrings['timer'])
         else:
             timerEventSymbol = ''
-        
+
         return self.template % (
             quote(event['ref'], safe=' ~@#$&()*!+=:;,.?/\''),
             event['id'],

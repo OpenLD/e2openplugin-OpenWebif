@@ -91,7 +91,7 @@ def getCurrentService(session):
 def getCurrentFullInfo(session):
 	now = next = {}
 	inf = getCurrentService(session)
-	inf['tuners'] = list(map(chr, range(65,65+nimmanager.getSlotCount()))) 
+	inf['tuners'] = list(map(chr, range(65,65+nimmanager.getSlotCount())))
 
 	try:
 		info = session.nav.getCurrentService().info()
@@ -721,7 +721,7 @@ def getSearchEpg(sstr, endtime=None, fulldesc=False, bouquetsonly=False):
 					bsref[service2['servicereference']] = True
 				else:
 					bsref[service['servicereference']] = True
-			
+
 		for event in events:
 			if bouquetsonly and not event[7] in bsref:
 				continue
@@ -823,7 +823,7 @@ def getMultiEpg(self, ref, begintime=-1, endtime=None, Mode=1):
 			if not timerlist.has_key(str(timer.service_ref)):
 				timerlist[str(timer.service_ref)] = []
 			timerlist[str(timer.service_ref)].append(timer)
-		
+
 		if begintime == -1:
 			# If no start time is requested, use current time as start time and extend
 			# show all events until 6:00 next day

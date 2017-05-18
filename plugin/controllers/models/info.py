@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ##############################################################################
-#                        2011 E2OpenPlugins                                  #
+#                        2011-2017 E2OpenPlugins                             #
 #                                                                            #
 #  This file is open source software; you can redistribute it and/or modify  #
 #     it under the terms of the GNU General Public License version 2 as      #
@@ -41,7 +41,7 @@ import sys
 import time
 import string
 
-OPENWEBIFVER = "OWIF 1.2.1"
+OPENWEBIFVER = "OWIF 1.2.5"
 
 STATICBOXINFO = None
 
@@ -495,7 +495,7 @@ def getInfo(session = None, need_fullinfo = False):
 	# TODO: fstab
 
 	info['transcoding'] = False
-	if (info['model'] in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1')):
+	if (info['model'] in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1', 'formuler1tc')):
 		if os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TransCodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TranscodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/MultiTransCodingSetup/plugin.pyo')):
 			info['transcoding'] = True
 

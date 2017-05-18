@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ##############################################################################
-#                        2011 E2OpenPlugins                                  #
+#                        2011 - 2017 E2OpenPlugin                            #
 #                                                                            #
 #  This file is open source software; you can redistribute it and/or modify  #
 #     it under the terms of the GNU General Public License version 2 as      #
@@ -97,7 +97,7 @@ def getTimers(session):
 			"eit": timer.eit,
 			"name": timer.name,
 			"description": timer.description,
-			"descriptionextended": descriptionextended,
+			"descriptionextended": unicode(descriptionextended,'utf_8', errors='ignore').encode('utf_8', 'ignore'),
 			"disabled": disabled,
 			"begin": timer.begin,
 			"end": timer.end,

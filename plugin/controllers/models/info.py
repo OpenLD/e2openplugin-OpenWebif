@@ -14,6 +14,7 @@ from Plugins.Extensions.OpenWebif.__init__ import _
 from Components.About import about
 from Components.config import config
 from Components.NimManager import nimmanager
+from Components.About import about, getVersionString, getChipSetString, getKernelVersionString, getCPUString, getCpuCoresString, getPythonVersionString, getFFmpegVersionString, getGStreamerVersionString, getDriverInstalledDate
 from Components.Harddisk import harddiskmanager
 from Components.Network import iNetwork
 from Components.Language import language
@@ -25,6 +26,7 @@ from time import time, localtime, strftime
 from enigma import eDVBVolumecontrol, eServiceCenter, eServiceReference, eEnv
 from twisted.web import version
 from socket import has_ipv6, AF_INET6, AF_INET, inet_ntop, inet_pton, getaddrinfo
+from os import path
 
 try:
 	from boxbranding import getBoxType, getMachineBuild, getMachineBrand, getMachineName, getImageDistro, getImageVersion, getImageBuild, getOEVersion, getDriverDate
@@ -40,6 +42,7 @@ import os
 import sys
 import time
 import string
+import re
 
 OPENWEBIFVER = "OWIF 1.2.5"
 
@@ -49,7 +52,7 @@ def getOpenWebifVer():
 	return OPENWEBIFVER
 
 def getFriendlyImageDistro():
-	dist = getImageDistro().replace("openatv","OpenATV").replace("openhdf","OpenHDF").replace("openpli","OpenPLi").replace("openvix","OpenViX")
+	dist = getImageDistro().replace("openld","OpenLD")
 	return dist
 
 def getIPMethod(iface):
@@ -280,7 +283,42 @@ def getInfo(session = None, need_fullinfo = False):
 		chipset = f.readline().strip()
 		f.close()
 
-	info['chipset'] = chipset
+	bogoMIPS = ""
+	if path.exists('/proc/cpuinfo'):
+		f = open('/proc/cpuinfo', 'r')
+		temp = f.readlines()
+		f.close()
+		try:
+			for lines in temp:
+				lisp = lines.split(': ')
+				if lisp[0].startswith('BogoMIPS'):
+					bogoMIPS = "" + str(int(float(lisp[1].replace('\n','')))) + ""
+					break
+		except:
+			pass
+
+	cpuMHz = ""
+	if getMachineBuild() in ('vusolo4k', 'vuultimo4k'):
+		cpuMHz = "   (1,5 GHz)"
+	elif getMachineBuild() in ('vuuno4k', 'gbquad4k'):
+		cpuMHz = "   (1,7 GHz)"
+	elif getMachineBuild() in ('formuler1tc', 'formuler1'):
+		cpuMHz = "   (1,3 GHz)"
+	else:
+		if path.exists('/proc/cpuinfo'):
+			f = open('/proc/cpuinfo', 'r')
+			temp = f.readlines()
+			f.close()
+			try:
+				for lines in temp:
+					lisp = lines.split(': ')
+					if lisp[0].startswith('cpu MHz'):
+						cpuMHz = "   (" +  str(int(float(lisp[1].replace('\n', '')))) + " MHz)"
+						break
+			except:
+				pass
+
+	info['chipset'] = chipset + " - " + str(getCPUString()) + " " + cpuMHz + " " + "x " + str(getCpuCoresString()) + " " + _("Cores")
 
 	memFree = 0
 	for line in open("/proc/meminfo",'r'):
@@ -315,8 +353,8 @@ def getInfo(session = None, need_fullinfo = False):
 	ib = getImageBuild()
 	if ib:
 		info['imagever'] = info['imagever'] + "." + ib
-	info['enigmaver'] = getEnigmaVersionString()
-	info['driverdate'] = getDriverDate()
+	info['enigmaver'] = str(getEnigmaVersionString())
+	info['driverdate'] = getDriverInstalledDate()
 	info['kernelver'] = about.getKernelVersionString()
 
 	try:

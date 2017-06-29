@@ -27,14 +27,19 @@ try:
 except ImportError:
 	from Plugins.Extensions.OpenWebif.backport.OrderedDict import OrderedDict
 
+# The fields fetched by filterName() and convertDesc() all need to be
+# html-escaped, so do it there.
+#
+from cgi import escape as html_escape
+
 def filterName(name):
 	if name is not None:
-		name = name.replace('\xc2\x86', '').replace('\xc2\x87', '')
+		name = html_escape(name.replace('\xc2\x86', '').replace('\xc2\x87', ''), quote=True)
 	return name
 
 def convertDesc(val):
 	if val is not None:
-		return unicode(val,'utf_8', errors='ignore').encode('utf_8', 'ignore')
+		return html_escape(unicode(val,'utf_8', errors='ignore').encode('utf_8', 'ignore'), quote=True);
 	return val
 
 def getServiceInfoString(info, what):
@@ -362,12 +367,25 @@ def getChannels(idbouquet, stype):
 				chan['now_ev_id'] = nowevent[0][4]
 				chan['now_idp'] = "nowd" + str(idp)
 				nextevent = epgcache.lookupEvent(['TBDIX', (channel[0], +1, -1)])
-				chan['next_title'] = filterName(nextevent[0][0])
-				chan['next_begin'] =  strftime("%H:%M", (localtime(nextevent[0][1])))
-				chan['next_end'] = strftime("%H:%M",(localtime(nextevent[0][1] + nextevent[0][2])))
-				chan['next_duration'] = int(nextevent[0][2] / 60)
-				chan['next_ev_id'] = nextevent[0][3]
-				chan['next_idp'] = "nextd" + str(idp)
+				if len(nextevent) > 0 and nextevent[0][0] is not None:
+# Some fields have been seen to be missing from the next event...
+					if nextevent[0][1] == None:
+						nextevent[0][1] == time()
+					if nextevent[0][2] == None:
+						nextevent[0][2] == 0
+					chan['next_title'] = filterName(nextevent[0][0])
+					chan['next_begin'] =  strftime("%H:%M", (localtime(nextevent[0][1])))
+					chan['next_end'] = strftime("%H:%M",(localtime(nextevent[0][1] + nextevent[0][2])))
+					chan['next_duration'] = int(nextevent[0][2] / 60)
+					chan['next_ev_id'] = nextevent[0][3]
+					chan['next_idp'] = "nextd" + str(idp)
+				else:   # Have to fudge one in, as rest of OWI code expects it...
+					chan['next_title'] = filterName("<<absent>>")
+					chan['next_begin'] =  chan['now_end']
+					chan['next_end'] = chan['now_end']
+					chan['next_duration'] = 0
+					chan['next_ev_id'] = chan['now_ev_id']
+					chan['next_idp'] = chan['now_idp']
 				idp += 1
 		if int(channel[0].split(":")[1]) != 832:
 			ret.append(chan)

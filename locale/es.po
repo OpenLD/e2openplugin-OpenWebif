@@ -2181,6 +2181,12 @@ msgstr "Configuración OpenWebif"
 msgid "NCam Webinterface"
 msgstr ""
 
+msgid "Cores"
+msgstr "Núcleos"
+
+msgid "Allow IPK Upload"
+msgstr "Permitir la subida de IPK"
+
 #~ msgid "Afterevent"
 #~ msgstr "Tras el evento"
 

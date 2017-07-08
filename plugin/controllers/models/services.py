@@ -422,6 +422,7 @@ def getAllServices(type):
 	bouquets = getBouquets(type)["bouquets"]
 	pos = 0
 	for bouquet in bouquets:
+		sv = getServices(bouquet[0],True,False,pos)
 		services.append({
 			"servicereference": bouquet[0],
 			"servicename": bouquet[1],

@@ -30,7 +30,7 @@ def clearAllServices(self):
 	satellites = {}
 	transponders = {}
 	self.eDVBDB.readSatellites(satList, satellites, transponders)
-	positions = [x[0] for x in satList] 
+	positions = [x[0] for x in satList]
 	for pos in positions: # sat
 		self.eDVBDB.removeServices(-1, -1, -1, pos)
 	self.eDVBDB.removeServices(0xFFFF0000 - 0x100000000) # cable

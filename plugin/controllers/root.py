@@ -8,6 +8,10 @@
 #               published by the Free Software Foundation.                   #
 #                                                                            #
 ##############################################################################
+import os
+
+from twisted.web import static, http, proxy
+from twisted.web.resource import EncodingResourceWrapper
 
 from models.info import getPublicPath, getPiconPath
 from models.grab import grabScreenshot
@@ -15,7 +19,6 @@ from base import BaseController
 from web import WebController
 from ajax import AjaxController
 from api import ApiController
-from file import FileController
 from mobile import MobileController
 from ipkg import IpkgController
 from AT import ATController
@@ -24,19 +27,32 @@ from ER import ERController
 from BQE import BQEController
 from transcoding import TranscodingController
 from wol import WOLSetupController, WOLClientController
-from twisted.web import static, http, proxy
-import os
+import rest_fs_access
+
 
 class RootController(BaseController):
 	def __init__(self, session, path = ""):
-		BaseController.__init__(self, path)
-		self.session = session
+		BaseController.__init__(self, path=path, session=session)
 		piconpath = getPiconPath()
 
 		self.putChild("web", WebController(session))
 		self.putChild("api", ApiController(session))
 		self.putChild("ajax", AjaxController(session))
-		self.putChild("file", FileController(session))
+
+		encoder_factory = rest_fs_access.GzipEncodeByFileExtensionFactory(
+			extensions=[
+				'txt', 'json', 'html', 'xml', 'js', 'conf', 'cfg',
+				'eit', 'sc', 'ap'
+			])
+		#: gzip compression enabled file controller
+		wrapped_fs_controller = EncodingResourceWrapper(
+			rest_fs_access.FileController(
+				root='/',
+				resource_prefix="/file",
+				session=session),
+			[encoder_factory]
+		)
+		self.putChild("file", wrapped_fs_controller)
 		self.putChild("grab", grabScreenshot(session))
 		if os.path.exists(getPublicPath('mobile')):
 			self.putChild("mobile", MobileController(session))
@@ -59,8 +75,8 @@ class RootController(BaseController):
 		self.putChild("serienrecorder", SRController(session))
 		self.putChild("epgrefresh", ERController(session))
 		self.putChild("bouqueteditor", BQEController(session))
-		self.putChild("transcoding", TranscodingController(session))
-		self.putChild("wol", WOLClientController(session))
+		self.putChild("transcoding", TranscodingController())
+		self.putChild("wol", WOLClientController())
 		self.putChild("wolsetup", WOLSetupController(session))
 		if piconpath:
 			self.putChild("picon", static.File(piconpath))

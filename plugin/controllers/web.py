@@ -48,8 +48,7 @@ def whoami(request):
 
 class WebController(BaseController):
 	def __init__(self, session, path = ""):
-		BaseController.__init__(self, path)
-		self.session = session
+		BaseController.__init__(self, path=path, session=session)
 		self.putChild("stream", StreamController(session))
 
 	def prePageLoad(self, request):
@@ -80,7 +79,7 @@ class WebController(BaseController):
 		return self.P_tstate(request,success)
 
 #	TODO: improve after action / save , save+record , nothing
-#	config.timeshift.favoriteSaveAction ....
+#	config.timeshift.favoriteSaveAction .... 
 	def P_tsstop(self, request):
 		success = True
 		oldcheck = False
@@ -134,7 +133,7 @@ class WebController(BaseController):
 				res = getVolumeStatus()
 				res["result"] = False
 				res["message"] = _("Wrong parameter format 'set=%s'. Use set=set15 ") % request.args["set"][0]
-				return rets
+				return res
 
 		res = getVolumeStatus()
 		res["result"] = False
@@ -196,7 +195,7 @@ class WebController(BaseController):
 	def P_supports_powerup_without_waking_tv(self, request):
 		try:
 			#returns 'True' if the image supports the function "Power on without TV":
-			f = open("/tmp/powerup_without_waking_tv.txt", "r")
+			f = open("/tmp/powerup_without_waking_tv.txt", "r") # nosec
 			powerupWithoutWakingTv = f.read()
 			f.close()
 			if ((powerupWithoutWakingTv == 'True') or (powerupWithoutWakingTv == 'False')):
@@ -210,7 +209,7 @@ class WebController(BaseController):
 		if self.P_supports_powerup_without_waking_tv(request):
 			try:
 				#write "True" to file so that the box will power on ONCE skipping the HDMI-CEC communication:
-				f = open("/tmp/powerup_without_waking_tv.txt", "w")
+				f = open("/tmp/powerup_without_waking_tv.txt", "w") # nosec
 				f.write('True')
 				f.close()
 				return True
@@ -257,7 +256,7 @@ class WebController(BaseController):
 		else:
 			bRef = ""
 
-		request.setHeader('Content-Type', 'application/text')
+		request.setHeader('Content-Type', 'application/x-mpegurl')
 		services = getServices(bRef,False)
 		if config.OpenWebif.auth_for_streaming.value:
 			session = GetSession()
@@ -328,7 +327,7 @@ class WebController(BaseController):
 
 		try:
 			ttype = int(request.args["type"][0])
-		except Exception, e:
+		except ValueError:
 			return {
 				"result": False,
 				"message": _("type %s is not a number") % request.args["type"][0]
@@ -338,7 +337,7 @@ class WebController(BaseController):
 		if "timeout" in request.args.keys():
 			try:
 				timeout = int(request.args["timeout"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 
 		return sendMessage(self.session, request.args["text"][0], ttype, timeout)
@@ -348,6 +347,8 @@ class WebController(BaseController):
 
 	def P_movielist(self, request):
 		self.isGZ=True
+		if self.isJson:
+			request.setHeader("content-type", "application/json; charset=utf-8")
 		return getMovieList(request.args)
 
 	def P_fullmovielist(self, request):
@@ -359,7 +360,7 @@ class WebController(BaseController):
 		return getMovieList(request.args)
 
 	def P_movielistm3u(self, request):
-		request.setHeader('Content-Type', 'application/text')
+		request.setHeader('Content-Type', 'application/x-mpegurl')
 		movielist = getMovieList(request.args)
 		movielist["host"] = "%s://%s:%s" % (whoami(request)['proto'], request.getRequestHostname(), whoami(request)['port'])
 		return movielist
@@ -718,7 +719,7 @@ class WebController(BaseController):
 		if "time" in request.args.keys():
 			try:
 				begintime = int(request.args["time"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 		self.isGZ=True
 		return getBouquetEpg(request.args["bRef"][0], begintime)
@@ -732,14 +733,14 @@ class WebController(BaseController):
 		if "time" in request.args.keys():
 			try:
 				begintime = int(request.args["time"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 
 		endtime = -1
 		if "endTime" in request.args.keys():
 			try:
 				endtime = int(request.args["endTime"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 		self.isGZ=True
 		return getBouquetEpg(request.args["bRef"][0], begintime, endtime)
@@ -777,20 +778,29 @@ class WebController(BaseController):
 		return ret
 
 	def P_epgsearch(self, request):
-		res = self.testMandatoryArguments(request, ["search"])
-		if res:
-			return res
-		endtime = None
-		if "endtime" in request.args.keys():
-			try:
-				endtime = int(request.args["endtime"][0])
-			except Exception, e:
-				pass
 		self.isGZ=True
-		fulldesc=False
-		if "full" in request.args.keys():
-			fulldesc=True
-		return getSearchEpg(request.args["search"][0], endtime,fulldesc)
+		if "search" in request.args.keys():
+			endtime = None
+			if "endtime" in request.args.keys():
+				try:
+					endtime = int(request.args["endtime"][0])
+				except ValueError:
+					pass
+			fulldesc=False
+			if "full" in request.args.keys():
+				fulldesc=True
+			return getSearchEpg(request.args["search"][0], endtime,fulldesc)
+		else:
+			res = self.testMandatoryArguments(request, ["sref", "eventid"])
+			if res:
+				return res
+			service_reference = request.args["sref"][0]
+			item_id = 0
+			try:
+				item_id = int(request.args["eventid"][0])
+			except ValueError:
+				pass
+			return getEvent(service_reference,item_id)
 
 	def P_epgsearchrss(self, request):
 		res = self.testMandatoryArguments(request, ["search"])
@@ -812,14 +822,14 @@ class WebController(BaseController):
 		if "time" in request.args.keys():
 			try:
 				begintime = int(request.args["time"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 
 		endtime = -1
 		if "endTime" in request.args.keys():
 			try:
 				endtime = int(request.args["endTime"][0])
-			except Exception, e:
+			except ValueError:
 				pass
 		self.isGZ=True
 		return getChannelEpg(request.args["sRef"][0], begintime, endtime)
@@ -843,7 +853,7 @@ class WebController(BaseController):
 
 		try:
 			eventid = int(request.args["eventid"][0])
-		except Exception, e:
+		except ValueError:
 			return {
 				"result": False,
 				"message": "The parameter 'eventid' must be a number"
@@ -926,7 +936,7 @@ class WebController(BaseController):
 						if servicepath and servicepath.startswith("/"):
 							mnow["filename"] = servicepath
 							mnow["sref"] = serviceref.toString()
-				except Exception, e:
+				except Exception, e: # nosec
 					pass
 		return {
 			"info": info,
@@ -1002,10 +1012,8 @@ class WebController(BaseController):
 			if res:
 				return res
 			key = request.args["key"][0]
-			if "/" not in key and "%" not in key and "." in key:
-				keys = key.split('.')
-				if len(keys) == 3 and keys[0] == 'config':
-					return saveConfig(key, request.args["value"][0])
+			value = request.args["value"][0]
+			return saveConfig(key, value)
 		return {"result": False}
 
 	def P_mediaplayeradd(self, request):
@@ -1104,7 +1112,7 @@ class WebController(BaseController):
 					time = 999
 				elif time < 0:
 					time = 0
-			except Exception, e:
+			except ValueError:
 				pass
 
 		action = "standby"
@@ -1213,9 +1221,8 @@ class WebController(BaseController):
 	def P_setmepgmode(self, request):
 		if "mode" in request.args.keys():
 			try:
-				mode = request.args["mode"][0]
-				config.OpenWebif.webcache.mepgmode.value = int(mode)
+				config.OpenWebif.webcache.mepgmode.value = int(request.args["mode"][0])
 				config.OpenWebif.webcache.mepgmode.save()
-			except Exception, e:
+			except ValueError:
 				pass
 		return {}

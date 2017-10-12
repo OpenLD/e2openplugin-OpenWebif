@@ -85,3 +85,4 @@ class grabScreenshot(resource.Resource):
 		# the object alive at least until the request finishes
 		request.grab_in_progress = GrabRequest(request, self.session)
 		return server.NOT_DONE_YET
+

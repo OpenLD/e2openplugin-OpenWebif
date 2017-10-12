@@ -39,7 +39,7 @@ def filterName(name):
 
 def convertDesc(val):
 	if val is not None:
-		return html_escape(unicode(val,'utf_8', errors='ignore').encode('utf_8', 'ignore'), quote=True);
+		return html_escape(unicode(val,'utf_8', errors='ignore').encode('utf_8', 'ignore'), quote=True)
 	return val
 
 def getServiceInfoString(info, what):
@@ -142,7 +142,7 @@ def getCurrentFullInfo(session):
 		idx = 0
 		while idx < n:
 			i = audio.getTrackInfo(idx)
-			description = i.getDescription();
+			description = i.getDescription()
 			if "AC3" in description or "DTS" in description or "Dolby Digital" in description:
 				inf['dolby'] = True
 			idx += 1
@@ -737,8 +737,11 @@ def getSearchEpg(sstr, endtime=None, fulldesc=False, bouquetsonly=False):
 	if fulldesc:
 		if hasattr(eEPGCache, 'FULL_DESCRIPTION_SEARCH'):
 			search_type = eEPGCache.FULL_DESCRIPTION_SEARCH
-	events = epgcache.search(('IBDTSENR', 128, search_type, sstr, 1));
+	events = epgcache.search(('IBDTSENR', 128, search_type, sstr, 1))
 	if events is not None:
+		#TODO : discuss #677
+		#events.sort(key = lambda x: (x[1],x[6])) # sort by date,sname
+		#events.sort(key = lambda x: x[1]) # sort by date
 		if bouquetsonly:
 			# collect service references from TV bouquets
 			bsref = {}
@@ -780,8 +783,11 @@ def getSearchSimilarEpg(ref, eventid):
 	ret = []
 	ev = {}
 	epgcache = eEPGCache.getInstance()
-	events = epgcache.search(('IBDTSENR', 128, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, ref, eventid));
+	events = epgcache.search(('IBDTSENR', 128, eEPGCache.SIMILAR_BROADCASTINGS_SEARCH, ref, eventid))
 	if events is not None:
+		#TODO : discuss #677
+		#events.sort(key = lambda x: (x[1],x[6])) # sort by date,sname
+		#events.sort(key = lambda x: x[1]) # sort by date
 		for event in events:
 			ev = {}
 			ev['id'] = event[0]
@@ -909,8 +915,22 @@ def getPicon(sname):
 	filename = getPiconPath() + sname
 	if fileExists(filename):
 		return "/picon/" + sname
-	fields = sname.split('_', 3)
-	if len(fields) > 2 and fields[2] != '2':
+	fields = sname.split('_', 8)
+	if len(fields) > 7 and not fields[6].endswith("0000"):
+		#remove "sub-network" from namespace
+		fields[6] = fields[6][:-4] + "0000"
+		sname='_'.join(fields)
+		filename = getPiconPath() + sname
+		if fileExists(filename):
+			return "/picon/" + sname
+	if len(fields) > 1 and fields[0] != '1':
+		#fallback to 1 for other reftypes
+		fields[0] = '1'
+		sname='_'.join(fields)
+		filename = getPiconPath() + sname
+		if fileExists(filename):
+			return "/picon/" + sname
+	if len(fields) > 3 and fields[2] != '1':
 		#fallback to 1 for tv services with nonstandard servicetypes
 		fields[2] = '1'
 		sname='_'.join(fields)

@@ -65,7 +65,7 @@ def getStream(session, request, m3ufile):
 	machinebuild = info["machinebuild"]
 	transcoder_port = None
 	args = ""
-	if model in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or machinebuild in ('dags7356', 'dags7252'):
+	if model in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or machinebuild in ('dags7356', 'dags7252', 'gb7252', 'gb7356'):
 		try:
 			transcoder_port = int(config.plugins.transcodingsetup.port.value)
 		except StandardError:
@@ -78,7 +78,7 @@ def getStream(session, request, m3ufile):
 			portNumber = request.args["port"][0]
 
 	# INI use dynamic encoder allocation, and each stream can have diffrent parameters
-	if machinebuild in ('inihdp', 'hd2400', 'et10000'):
+	if machinebuild in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf5008'):
 		transcoder_port = 8001
 		if "device" in request.args :
 			if request.args["device"][0] == "phone" :
@@ -89,7 +89,7 @@ def getStream(session, request, m3ufile):
 				aspectratio = config.plugins.transcodingsetup.aspectratio.value
 				interlaced = config.plugins.transcodingsetup.interlaced.value
 				args = "?bitrate=%s?width=%s?height=%s?aspectratio=%s?interlaced=%s" % (bitrate, width, height, aspectratio, interlaced)
-	if machinebuild in ('ew7356', 'formuler1', 'formuler1tc'):
+	if machinebuild in ('ew7356', 'formuler1tc', 'tiviaraplus'):
 		transcoder_port = 8001
 		if "device" in request.args :
 			if request.args["device"][0] == "phone" :
@@ -111,7 +111,7 @@ def getStream(session, request, m3ufile):
 		auth=''
 
 	response = "#EXTM3U \n#EXTVLCOPT--http-reconnect=true \n%shttp://%s%s:%s/%s%s\n" % (progopt,auth,request.getRequestHostname(), portNumber, sRef, args)
-	request.setHeader('Content-Type', 'application/text')
+	request.setHeader('Content-Type', 'application/x-mpegurl')
 	return response
 
 def getTS(self, request):
@@ -154,7 +154,7 @@ def getTS(self, request):
 		machinebuild = info["machinebuild"]
 		transcoder_port = None
 		args = ""
-		if model in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus"):
+		if model in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or machinebuild in ('gb7252', 'gb7356'):
 			try:
 				transcoder_port = int(config.plugins.transcodingsetup.port.value)
 			except StandardError:
@@ -167,7 +167,7 @@ def getTS(self, request):
 			portNumber = request.args["port"][0]
 
 		# INI use dynamic encoder allocation, and each stream can have diffrent parameters
-		if machinebuild in ('inihdp', 'hd2400', 'et10000'):
+		if machinebuild in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf5008'):
 			if "device" in request.args :
 				if request.args["device"][0] == "phone" :
 					portNumber = config.OpenWebif.streamport.value
@@ -178,7 +178,7 @@ def getTS(self, request):
 					aspectratio = config.plugins.transcodingsetup.aspectratio.value
 					interlaced = config.plugins.transcodingsetup.interlaced.value
 					args = "?bitrate=%s?width=%s?height=%s?aspectratio=%s?interlaced=%s" % (bitrate, width, height, aspectratio, interlaced)
-		elif machinebuild in ('ew7356', 'formuler1', 'formuler1tc'):
+		elif machinebuild in ('ew7356', 'formuler1tc', 'tiviaraplus'):
 			if "device" in request.args :
 				if request.args["device"][0] == "phone" :
 					portNumber = config.OpenWebif.streamport.value
@@ -201,7 +201,7 @@ def getTS(self, request):
 				portNumber = m.group(1)
 
 		response = "#EXTM3U \n#EXTVLCOPT--http-reconnect=true \n%s%s://%s:%s/file?file=%s%s\n" % ((progopt,proto, request.getRequestHostname(), portNumber, quote(filename), args))
-		request.setHeader('Content-Type', 'application/text')
+		request.setHeader('Content-Type', 'application/x-mpegurl')
 		return response
 	else:
 		return "Missing file parameter"
@@ -226,7 +226,7 @@ def getStreamSubservices(session, request):
 			"servicename": ServiceReference(currentServiceRef).getServiceName()
 			})
 		if subservices and subservices.getNumberOfSubservices() != 0:
-			n = subservices and subservices.getNumberOfSubservices()
+			n = subservices and subservices.getNumberOfSubservices()  
 			z = 0
 			while z < n:
 				sub = subservices.getSubservice(z)

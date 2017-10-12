@@ -44,9 +44,11 @@ import time
 import string
 import re
 
-OPENWEBIFVER = "OWIF 1.2.6"
+OPENWEBIFVER = "OWIF 1.2.7 (OpenLD)"
 
 STATICBOXINFO = None
+
+PICONPATH = None
 
 def getOpenWebifVer():
 	return OPENWEBIFVER
@@ -174,7 +176,7 @@ def getAdapterIPv6(ifname):
 
 def formatIp(ip):
 	if ip is None or len(ip) != 4:
-		return "0.0.0.0"
+		return "0.0.0.0" # nosec
 	return "%d.%d.%d.%d" % (ip[0], ip[1], ip[2], ip[3])
 
 def getBasePath():
@@ -191,16 +193,46 @@ def getViewsPath(file = ""):
 	return getBasePath() + "/controllers/views/" + file
 
 def getPiconPath():
+
+	global PICONPATH
+
+	if PICONPATH is not None:
+		return PICONPATH
+
+	# Alternative locations need to come first, as the default location always exists and needs to be the last resort
+	# Sort alternative locations in order of likelyness that they are non-rotational media:
+	# CF/MMC are always memory cards
+	# USB can be memory stick or magnetic hdd or SSD, but stick is most likely
+	# HDD can be magnetic hdd, SSD or even memory stick (if no hdd present) or a NAS
+	pathlist = [
+		"/media/cf/",
+		"/media/mmc/",
+		"/media/usb/",
+		"/media/hdd/",
+		"/usr/share/enigma2/",
+		"/"
+		]
+
+	for p in pathlist:
+		if pathExists(p+ "owipicon/"):
+			PICONPATH = p + "owipicon/"
+			return PICONPATH
+		elif pathExists(p+ "picon/"):
+			PICONPATH = p + "picon/"
+			return PICONPATH
+
+	return None
+
+
+def _getPiconPath():
 	if pathExists("/media/usb/picon/"):
 		return "/media/usb/picon/"
-	elif pathExists("/media/hdd/picon/"):
-		return "/media/hdd/picon/"
 	elif pathExists("/media/cf/picon/"):
 		return "/media/cf/picon/"
-	elif pathExists("/media/mmc1/picon/"):
-		return "/media/mmc1/picon/"
-	elif pathExists("/media/uSDextra/picon/"):
-		return "/media/uSDextra/picon/"
+	elif pathExists("/media/mmc/picon/"):
+		return "/media/mmc/picon/"
+	elif pathExists("/media/hdd/picon/"):
+		return "/media/hdd/picon/"
 	elif pathExists("/usr/share/enigma2/picon/"):
 		return "/usr/share/enigma2/picon/"
 	elif pathExists("/picon/"):
@@ -298,12 +330,21 @@ def getInfo(session = None, need_fullinfo = False):
 			pass
 
 	cpuMHz = ""
-	if getMachineBuild() in ('vusolo4k', 'vuultimo4k'):
+	if getMachineBuild() in ('vusolo4k','vuultimo4k'):
 		cpuMHz = "   (1,5 GHz)"
-	elif getMachineBuild() in ('vuuno4k', 'gbquad4k'):
-		cpuMHz = "   (1,7 GHz)"
-	elif getMachineBuild() in ('formuler1tc', 'formuler1'):
+	elif getMachineBuild() in ('formuler1tc','formuler1', 'triplex', 'tiviaraplus'):
 		cpuMHz = "   (1,3 GHz)"
+	elif getMachineBuild() in ('vuuno4k','dm900','dm920', 'gb7252', 'dags7252','xc7439','8100s'):
+		cpuMHz = "   (1,7 GHz)"
+	elif getMachineBuild() in ('sf5008','et13000','et1x000','hd52','hd51','sf4008','vs1500','h7'):
+		try:
+			import binascii
+			f = open('/sys/firmware/devicetree/base/cpus/cpu@0/clock-frequency', 'rb')
+			clockfrequency = f.read()
+			f.close()
+			cpuMHz = "   (%s MHz)" % str(round(int(binascii.hexlify(clockfrequency), 16)/1000000,1))
+		except:
+			cpuMHz = "   (1,7 GHz)"
 	else:
 		if path.exists('/proc/cpuinfo'):
 			f = open('/proc/cpuinfo', 'r')
@@ -534,7 +575,7 @@ def getInfo(session = None, need_fullinfo = False):
 	# TODO: fstab
 
 	info['transcoding'] = False
-	if (info['model'] in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1', 'formuler1tc')):
+	if (info['model'] in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf5008', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1tc', 'gb7356', 'gb7252', 'tiviaraplus')):
 		if os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TransCodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TranscodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/MultiTransCodingSetup/plugin.pyo')):
 			info['transcoding'] = True
 

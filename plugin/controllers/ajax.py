@@ -30,8 +30,7 @@ except:
 
 class AjaxController(BaseController):
 	def __init__(self, session, path = ""):
-		BaseController.__init__(self, path)
-		self.session = session
+		BaseController.__init__(self, path=path, session=session)
 
 	def P_current(self, request):
 		return getCurrentFullInfo(self.session)
@@ -327,8 +326,9 @@ class AjaxController(BaseController):
 		if transcoding:
 			try:
 				transcoder_port = int(config.plugins.transcodingsetup.port.value)
-				if getMachineBuild() in ('inihdp', 'hd2400', 'et10000','ew7356','formuler1','formuler1tc'):
+				if getMachineBuild() in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf5008','ew7356','formuler1tc', 'tiviaraplus'):
 					transcoder_port = int(config.OpenWebif.streamport.value)
 			except StandardError:
 				transcoder_port = 0
 		return {"transcoder_port" : transcoder_port, "vxgenabled" : vxgenabled, "auth" : auth}
+

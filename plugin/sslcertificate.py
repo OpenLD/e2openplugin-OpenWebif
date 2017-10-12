@@ -24,7 +24,7 @@ CERT_FILE = resolveFilename(SCOPE_CONFIG, "cert.pem")
 class SSLCertificateGenerator:
 
 	def __init__(self):
-		# define some defaults
+		# define some defaults 
 		self.type = crypto.TYPE_RSA
 		self.bits = 1024
 		self.digest = 'sha1'
@@ -63,3 +63,4 @@ class SSLCertificateGenerator:
 		certificate.set_pubkey(keypair)
 		certificate.sign(keypair, self.digest)
 		return certificate
+

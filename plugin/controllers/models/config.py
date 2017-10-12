@@ -5,9 +5,10 @@ from Components.SystemInfo import SystemInfo
 from Components.config import config
 from Tools.Directories import resolveFilename, SCOPE_CURRENT_PLUGIN, fileExists
 from os import path, listdir
-import xml.etree.cElementTree
+import xml.etree.cElementTree # nosec
 
 from Plugins.Extensions.OpenWebif.__init__ import _
+from Plugins.Extensions.OpenWebif.controllers.utilities import get_config_attribute
 
 def addCollapsedMenu(name):
 	tags = config.OpenWebif.webcache.collapsedmenus.value.split("|")
@@ -147,8 +148,16 @@ def getJsonFromConfig(cnf):
 
 def saveConfig(path, value):
 	try:
-		cnf = eval(path)
-		if cnf.__class__.__name__ == "ConfigBoolean" or cnf.__class__.__name__ == "ConfigEnableDisable" or cnf.__class__.__name__ == "ConfigYesNo":
+		cnf = get_config_attribute(path, root_obj=config)
+	except Exception as exc:
+		print "[OpenWebif] ", exc
+		return {
+			"result": False,
+			"message": "I'm sorry Dave, I'm afraid I can't do that"
+		}
+
+	try:
+		if cnf.__class__.__name__ in ("ConfigBoolean", "ConfigEnableDisable", "ConfigYesNo"):
 			cnf.value = value == "true"
 		elif cnf.__class__.__name__ == "ConfigSet":
 			values = cnf.value
@@ -159,7 +168,7 @@ def saveConfig(path, value):
 			cnf.value = values
 		elif cnf.__class__.__name__ == "ConfigNumber":
 			cnf.value = int(value)
-		elif  cnf.__class__.__name__ == "ConfigInteger" or cnf.__class__.__name__ == "TconfigInteger":
+		elif cnf.__class__.__name__ in ("ConfigInteger", "TconfigInteger"):
 			cnf_min = int(cnf.limits[0][0])
 			cnf_max = int(cnf.limits[0][1])
 			cnf_value = int(value)
@@ -192,7 +201,7 @@ def getConfigs(key):
 	if config_entries:
 		for entry in config_entries:
 			try:
-				data = getJsonFromConfig(eval(entry.text or ""))
+				data = getJsonFromConfig(eval(entry.text or ""))  # nosec
 				text = _(entry.get("text", ""))
 				if "limits" in data:
 					text = "%s (%d - %d)" % (text, data["limits"][0], data["limits"][1])
@@ -260,7 +269,7 @@ class ConfigFiles:
 		for setupfile in self.setupfiles:
 #			print "[OpenWebif] loading configuration file :", setupfile
 			setupfile = file(setupfile, 'r')
-			setupdom = xml.etree.cElementTree.parse(setupfile)
+			setupdom = xml.etree.cElementTree.parse(setupfile) # nosec
 			setupfile.close()
 			xmldata = setupdom.getroot()
 			for section in xmldata.findall("setup"):

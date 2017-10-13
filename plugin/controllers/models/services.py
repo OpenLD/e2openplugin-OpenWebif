@@ -920,14 +920,14 @@ def getPicon(sname):
 		#remove "sub-network" from namespace
 		fields[6] = fields[6][:-4] + "0000"
 		sname='_'.join(fields)
-		filename = getPiconPath() + sname
+		filename = str(getPiconPath()) + sname
 		if fileExists(filename):
 			return "/picon/" + sname
 	if len(fields) > 1 and fields[0] != '1':
 		#fallback to 1 for other reftypes
 		fields[0] = '1'
 		sname='_'.join(fields)
-		filename = getPiconPath() + sname
+		filename = str(getPiconPath()) + sname
 		if fileExists(filename):
 			return "/picon/" + sname
 	if len(fields) > 3 and fields[2] != '1':

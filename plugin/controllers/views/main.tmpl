@@ -121,23 +121,29 @@
 <!doctype html>
 <html>
 <head>
-	<meta http-equiv="Page-Exit" content="BlendTrans(Duration=0)" />
-	<meta http-equiv="Page-Enter" content="BlendTrans(Duration=0)" />
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<meta name="robots" content="noindex,nofollow" />
-	<link rel="shortcut icon" href="images/favicon.png">
-	<link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css">
-	#if $t != "original" and $t != "clear"
-		#set $t = $t + '.css'
-		<link type="text/css" rel="stylesheet" href="themes/$t">
-	#end if
-	<link type="text/css" href="css/style.min.css" rel="stylesheet"/>
-	#if $t == "original"
-		<link type="text/css" href="css/theme_original.css" rel="stylesheet"/>
-	#end if
-	<link type="text/css" href="web/css" rel="stylesheet"/>
-	<title>$boxname - OpenWebif</title>
+<meta http-equiv="Page-Exit" content="BlendTrans(Duration=0)" />
+<meta http-equiv="Page-Enter" content="BlendTrans(Duration=0)" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="robots" content="noindex,nofollow" />
+<link rel="shortcut icon" href="images/favicon.png">
+<script src="js/jquery.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="css/jquery-ui.min.css">
+#if $t != "original" and $t != "clear"
+	#set $t = $t + '.css'
+	<link rel="stylesheet" href="themes/$t">
+#end if
+<link type="text/css" href="css/style.min.css" rel="stylesheet"/>
+#if $t == "original"
+	<link type="text/css" href="css/theme_original.css" rel="stylesheet"/>
+#end if
+<link type="text/css" href="web/css" rel="stylesheet"/>
+<script type="text/javascript" src="js/openwebif-1.2.13.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-timepicker-addon.min.js"></script>
+<script type="text/javascript" src="js/chosen.1.8.2.min.js"></script>
+<script type="text/javascript">initJsTranslation($dumps($tstrings))</script>
+<title>$boxname - OpenWebif</title>
 </head>
 #if $t == "original"
 <body>
@@ -217,27 +223,19 @@
 		<p>Sorry, this function is not yet implemented.</p>
 	</div>
 	<div id="editTimerForm" title="$tstrings['edit_timer']"></div>
-
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
-	<script type="text/javascript" src="js/openwebif-1.2.13.min.js"></script>
-	<script type="text/javascript" src="js/jquery-ui-timepicker-addon.min.js"></script>
-	<script type="text/javascript" src="/js/chosen.1.8.2.min.js"></script>
-	<script type="text/javascript">initJsTranslation($dumps($tstrings))</script>
-	<script type="text/javascript">
-		var h = window.innerHeight - 210;
-		var hh = h-70;
-		var css = document.createElement("style");
-		css.type = "text/css";
-		css.innerHTML = '#tvcontentmain { height: '+h.toString()+'px; } #tvcontent,#movies,#timers { height: '+hh.toString()+'px; }';
-		document.body.appendChild(css);
-
-		\$(document).ready(function() {
-			\$("#remote_container").load("static/remotes/${remote}.html");
-			directlink();
-		});
-		theme = '$t';
-		SetLSValue('TimerListOffset',0);
-	</script>
+<script type="text/javascript">
+	var h = window.innerHeight - 210;
+	var hh = h-70;
+	var css = document.createElement("style");
+	css.type = "text/css";
+	css.innerHTML = '#tvcontentmain { height: '+h.toString()+'px; } #tvcontent,#movies,#timers { height: '+hh.toString()+'px; }';
+	document.body.appendChild(css);
+	\$(document).ready(function() {
+		\$("#remote_container").load("static/remotes/${remote}.html");
+		directlink();
+	});
+	theme = '$t';
+	SetLSValue('TimerListOffset',0);
+</script>
 </body>
 </html>

@@ -912,7 +912,7 @@ def getPicon(sname):
 	if pos != -1:
 		cname = ServiceReference(sname[:pos].rstrip(':')).getServiceName()
 		sname = sname[:pos].rstrip(':').replace(':','_') + ".png"
-	filename = getPiconPath() + sname
+	filename = str(getPiconPath()) + sname
 	if fileExists(filename):
 		return "/picon/" + sname
 	fields = sname.split('_', 8)
@@ -934,20 +934,20 @@ def getPicon(sname):
 		#fallback to 1 for tv services with nonstandard servicetypes
 		fields[2] = '1'
 		sname='_'.join(fields)
-		filename = getPiconPath() + sname
+		filename = str(getPiconPath()) + sname
 		if fileExists(filename):
 			return "/picon/" + sname
 	if cname is not None: # picon by channel name
 		cname1 = cname.replace('\xc2\x86','').replace('\xc2\x87', '').replace('/', '_').encode('utf-8', 'ignore')
-		if fileExists(getPiconPath() + cname1 + ".png"):
+		if fileExists(str(getPiconPath()) + cname1 + ".png"):
 			return "/picon/" + cname1 + ".png"
 		cname = unicodedata.normalize('NFKD', unicode(cname, 'utf_8', errors='ignore')).encode('ASCII', 'ignore')
 		cname = re.sub('[^a-z0-9]', '', cname.replace('&', 'and').replace('+', 'plus').replace('*', 'star').lower())
 		if len(cname) > 0:
-			filename = getPiconPath() + cname + ".png"
+			filename = str(getPiconPath()) + cname + ".png"
 		if fileExists(filename):
 			return "/picon/" + cname + ".png"
-		if len(cname) > 2 and cname.endswith('hd') and fileExists(getPiconPath() + cname[:-2] + ".png"):
+		if len(cname) > 2 and cname.endswith('hd') and fileExists(str(getPiconPath()) + cname[:-2] + ".png"):
 			return "/picon/" + cname[:-2] + ".png"
 	return "/images/default_picon.png"
 

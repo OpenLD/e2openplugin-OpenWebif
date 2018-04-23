@@ -34,7 +34,7 @@ def get_transcoding_features(encoder = 0):
 		if hasattr(config.plugins.transcodingsetup.encoder[int(encoder)], feature):
 			try:
 				encoder_features[feature] = getattr(config.plugins.transcodingsetup.encoder[int(encoder)], feature)
-			except KeyError:
+			except:
 				pass
 	return encoder_features
 
@@ -45,7 +45,7 @@ class TranscodingController(resource.Resource):
 		request.setHeader('charset', 'UTF-8')
 		try:
 			port = config.plugins.transcodingsetup.port
-		except KeyError:
+		except:
 			return '<?xml version="1.0" encoding="UTF-8" ?><e2simplexmlresult><e2state>false</e2state><e2error>Transcoding Plugin is not installed or your STB does not support transcoding</error></e2simplexmlresult>'
 
 		encoders = config.plugins.transcodingsetup.encodernum.choices

@@ -32,15 +32,18 @@ except ImportError:
 #
 from cgi import escape as html_escape
 
+
 def filterName(name):
 	if name is not None:
 		name = html_escape(name.replace('\xc2\x86', '').replace('\xc2\x87', ''), quote=True)
 	return name
 
+
 def convertDesc(val):
 	if val is not None:
 		return html_escape(unicode(val,'utf_8', errors='ignore').encode('utf_8', 'ignore'), quote=True)
 	return val
+
 
 def getServiceInfoString(info, what):
 	v = info.getInfo(what)
@@ -49,6 +52,7 @@ def getServiceInfoString(info, what):
 	if v == -2:
 		return info.getInfoString(what)
 	return v
+
 
 def getCurrentService(session):
 	try:
@@ -93,6 +97,7 @@ def getCurrentService(session):
 			"iswidescreen" : False
 		}
 
+
 def getCurrentFullInfo(session):
 	now = next = {}
 	inf = getCurrentService(session)
@@ -125,7 +130,7 @@ def getCurrentFullInfo(session):
 		inf['wide'] = inf['aspect'] in (3, 4, 7, 8, 0xB, 0xC, 0xF, 0x10)
 		inf['ttext'] = getServiceInfoString(info, iServiceInformation.sTXTPID)
 		inf['crypt'] = getServiceInfoString(info, iServiceInformation.sIsCrypted)
-		inf['subs'] = str(subservices and subservices.getNumberOfSubservices() > 0 )
+		inf['subs'] = str(subservices and subservices.getNumberOfSubservices() > 0)
 	else:
 		inf['sref'] = None
 		inf['picon'] = None
@@ -213,6 +218,7 @@ def getCurrentFullInfo(session):
 
 	return { "info": inf, "now": now, "next": next }
 
+
 def getBouquets(stype):
 	s_type = service_types_tv
 	s_type2 = "bouquets.tv"
@@ -225,6 +231,7 @@ def getBouquets(stype):
 	bouquets = removeHiddenBouquets(bouquets)
 	return { "bouquets": bouquets }
 
+
 def removeHiddenBouquets(bouquetList):
 	bouquets = bouquetList
 	if hasattr(eServiceReference, 'isInvisible'):
@@ -234,6 +241,7 @@ def removeHiddenBouquets(bouquetList):
 				bouquets.remove(bouquet)
 	return bouquets
 
+
 def getProviders(stype):
 	s_type = service_types_tv
 	if stype == "radio":
@@ -242,6 +250,7 @@ def getProviders(stype):
 	services = serviceHandler.list(eServiceReference('%s FROM PROVIDERS ORDER BY name'%(s_type)))
 	providers = services and services.getContent("SN", True)
 	return { "providers": providers }
+
 
 def getSatellites(stype):
 	ret = []
@@ -290,6 +299,7 @@ def getSatellites(stype):
 	ret = sortSatellites(ret)
 	return { "satellites": ret }
 
+
 def sortSatellites(satList):
 	import re
 	sortDict = {}
@@ -313,6 +323,7 @@ def sortSatellites(satList):
 			outList.append(satList[v])
 	return outList
 
+
 def getProtection(sref):
 	isProtected = "0"
 	if config.ParentalControl.configured.value and config.ParentalControl.servicepinactive.value:
@@ -334,6 +345,7 @@ def getProtection(sref):
 					else:
 						isProtected = '4'
 	return isProtected
+
 
 def getChannels(idbouquet, stype):
 	ret = []
@@ -363,28 +375,28 @@ def getChannels(idbouquet, stype):
 			nowevent = epgcache.lookupEvent(['TBDCIX', (channel[0], 0, -1)])
 			if len(nowevent) > 0 and nowevent[0][0] is not None:
 				chan['now_title'] = filterName(nowevent[0][0])
-				chan['now_begin'] =  strftime("%H:%M", (localtime(nowevent[0][1])))
-				chan['now_end'] = strftime("%H:%M",(localtime(nowevent[0][1] + nowevent[0][2])))
-				chan['now_left'] = int (((nowevent[0][1] + nowevent[0][2]) - nowevent[0][3]) / 60)
-				chan['progress'] = int(((nowevent[0][3] - nowevent[0][1]) * 100 / nowevent[0][2]) )
+				chan['now_begin'] = strftime("%H:%M", (localtime(nowevent[0][1])))
+				chan['now_end'] = strftime("%H:%M", (localtime(nowevent[0][1] + nowevent[0][2])))
+				chan['now_left'] = int(((nowevent[0][1] + nowevent[0][2]) - nowevent[0][3]) / 60)
+				chan['progress'] = int(((nowevent[0][3] - nowevent[0][1]) * 100 / nowevent[0][2]))
 				chan['now_ev_id'] = nowevent[0][4]
 				chan['now_idp'] = "nowd" + str(idp)
 				nextevent = epgcache.lookupEvent(['TBDIX', (channel[0], +1, -1)])
-				if len(nextevent) > 0 and nextevent[0][0] is not None:
 # Some fields have been seen to be missing from the next event...
-					if nextevent[0][1] == None:
-						nextevent[0][1] == time()
-					if nextevent[0][2] == None:
-						nextevent[0][2] == 0
+				if len(nextevent) > 0 and nextevent[0][0] is not None:
+					if nextevent[0][1] is None:
+						nextevent[0][1] = time()
+					if nextevent[0][2] is None:
+						nextevent[0][2] = 0
 					chan['next_title'] = filterName(nextevent[0][0])
-					chan['next_begin'] =  strftime("%H:%M", (localtime(nextevent[0][1])))
-					chan['next_end'] = strftime("%H:%M",(localtime(nextevent[0][1] + nextevent[0][2])))
+					chan['next_begin'] = strftime("%H:%M", (localtime(nextevent[0][1])))
+					chan['next_end'] = strftime("%H:%M", (localtime(nextevent[0][1] + nextevent[0][2])))
 					chan['next_duration'] = int(nextevent[0][2] / 60)
 					chan['next_ev_id'] = nextevent[0][3]
 					chan['next_idp'] = "nextd" + str(idp)
 				else:   # Have to fudge one in, as rest of OWI code expects it...
 					chan['next_title'] = filterName("<<absent>>")
-					chan['next_begin'] =  chan['now_end']
+					chan['next_begin'] = chan['now_end']
 					chan['next_end'] = chan['now_end']
 					chan['next_duration'] = 0
 					chan['next_ev_id'] = chan['now_ev_id']
@@ -392,9 +404,10 @@ def getChannels(idbouquet, stype):
 				idp += 1
 		if int(channel[0].split(":")[1]) != 832:
 			ret.append(chan)
-	return { "channels": ret }
+	return {"channels": ret}
 
-def getServices(sRef, showAll = True, showHidden = False, pos = 0):
+
+def getServices(sRef, showAll=True, showHidden=False, pos=0):
 	services = []
 
 	if sRef == "":
@@ -418,14 +431,15 @@ def getServices(sRef, showAll = True, showHidden = False, pos = 0):
 
 	return { "services": services,"pos" : pos }
 
+
 def getAllServices(type):
 	services = []
 	if type is None:
-		type="tv"
+		type = "tv"
 	bouquets = getBouquets(type)["bouquets"]
 	pos = 0
 	for bouquet in bouquets:
-		sv = getServices(bouquet[0],True,False,pos)
+		sv = getServices(bouquet[0], True, False, pos)
 		services.append({
 			"servicereference": bouquet[0],
 			"servicename": bouquet[1],
@@ -452,7 +466,7 @@ def getPlayableServices(sRef, sRefPlaying):
 			service2 = {}
 			service2['servicereference'] = service
 			info = servicecenter.info(eServiceReference(service))
-			service2['isplayable'] = info.isPlayable(eServiceReference(service),eServiceReference(sRefPlaying))>0
+			service2['isplayable'] = info.isPlayable(eServiceReference(service), eServiceReference(sRefPlaying)) > 0
 			services.append(service2)
 
 	return {
@@ -467,9 +481,10 @@ def getPlayableService(sRef, sRefPlaying):
 		"result": True,
 		"service": {
 			"servicereference": sRef,
-			"isplayable": info.isPlayable(eServiceReference(sRef),eServiceReference(sRefPlaying))>0
+			"isplayable": info.isPlayable(eServiceReference(sRef), eServiceReference(sRefPlaying)) > 0
 		}
 	}
+
 
 def getSubServices(session):
 	services = []
@@ -496,6 +511,7 @@ def getSubServices(session):
 
 	return { "services": services }
 
+
 def getEventDesc(ref, idev):
 	ref = unquote(ref)
 	epgcache = eEPGCache.getInstance()
@@ -508,6 +524,7 @@ def getEventDesc(ref, idev):
 		description = "No description available"
 
 	return { "description": description }
+
 
 def getEvent(ref, idev):
 	epgcache = eEPGCache.getInstance()
@@ -590,6 +607,7 @@ def getChannelEpg(ref, begintime=-1, endtime=-1):
 
 	return { "events": ret, "result": True }
 
+
 def getBouquetEpg(ref, begintime=-1, endtime=None):
 	ref = unquote(ref)
 	ret = []
@@ -621,6 +639,7 @@ def getBouquetEpg(ref, begintime=-1, endtime=None):
 			ret.append(ev)
 
 	return { "events": ret, "result": True }
+
 
 def getServicesNowNextEpg(sList):
 	ret = []
@@ -654,6 +673,7 @@ def getServicesNowNextEpg(sList):
 			ret.append(ev)
 
 	return { "events": ret, "result": True }
+
 
 def getBouquetNowNextEpg(ref, servicetype):
 	ref = unquote(ref)
@@ -693,6 +713,7 @@ def getBouquetNowNextEpg(ref, servicetype):
 
 	return { "events": ret, "result": True }
 
+
 def getNowNextEpg(ref, servicetype):
 	ref = unquote(ref)
 	ret = []
@@ -726,6 +747,7 @@ def getNowNextEpg(ref, servicetype):
 			ret.append(ev)
 
 	return { "events": ret, "result": True }
+
 
 def getSearchEpg(sstr, endtime=None, fulldesc=False, bouquetsonly=False):
 	ret = []
@@ -780,6 +802,7 @@ def getSearchEpg(sstr, endtime=None, fulldesc=False, bouquetsonly=False):
 				ret.append(ev)
 
 	return { "events": ret, "result": True }
+
 
 def getSearchSimilarEpg(ref, eventid):
 	ref = unquote(ref)
@@ -885,20 +908,21 @@ def getMultiEpg(self, ref, begintime=-1, endtime=None, Mode=1):
 			channel = filterName(event[5])
 			if not ret.has_key(channel):
 				if Mode == 1:
-					ret[channel] = [ [], [], [], [], [], [], [], [], [], [], [], [] ]
+					ret[channel] = [[], [], [], [], [], [], [], [], [], [], [], []]
 				else:
 					ret[channel] = [[]]
 				picons[channel] = getPicon(event[4])
 
 			if Mode == 1:
-				slot = int((event[1]-offset) / 7200)
+				slot = int((event[1] - offset) / 7200)
 				if slot < 0:
 					slot = 0
 				if slot < 12 and event[1] < lastevent:
 					ret[channel][slot].append(ev)
 			else:
 				ret[channel][0].append(ev)
-	return { "events": ret, "result": True, "picons": picons }
+	return {"events": ret, "result": True, "picons": picons}
+
 
 def getPicon(sname):
 	# remove URL part
@@ -954,6 +978,7 @@ def getPicon(sname):
 			return "/picon/" + cname[:-2] + ".png"
 	return "/images/default_picon.png"
 
+
 def getParentalControlList():
 	if config.ParentalControl.configured.value:
 		return {
@@ -979,6 +1004,7 @@ def getParentalControlList():
 		"services": services
 	}
 
+
 def loadEpg():
 	epgcache = eEPGCache.getInstance()
 	epgcache.load()
@@ -986,6 +1012,7 @@ def loadEpg():
 		"result": True,
 		"message": ""
 	}
+
 
 def saveEpg():
 	epgcache = eEPGCache.getInstance()

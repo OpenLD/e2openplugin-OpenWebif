@@ -339,7 +339,7 @@ class BaseController(resource.Resource):
 		except ImportError:
 			pass
 
-		if fileExists(resolveFilename(SCOPE_PLUGINS, "Extensions/OpenWebif/controllers/views/ajax/bqe.tmpl")):
+		if fileExists(resolveFilename(SCOPE_PLUGINS, "Extensions/OpenWebif/controllers/views/ajax/bqe.tmpl")) or fileExists(resolveFilename(SCOPE_PLUGINS, "Extensions/OpenWebif/controllers/views/ajax/bqe.pyo")):
 			extras.append({ 'key': 'ajax/bqe','description': _('BouquetEditor')})
 
 		try:
@@ -356,7 +356,7 @@ class BaseController(resource.Resource):
 				if plugins[0] in ["fancontrol","iptvplayer"]:
 					try:
 						extras.append({ 'key': plugins[0], 'description': plugins[2] , 'nw':'2'})
-					except KeyError:
+					except:
 						pass
 		except ImportError:
 			pass

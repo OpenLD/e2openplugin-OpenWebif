@@ -97,7 +97,7 @@ if __name__ == '__main__':
 		env_key = key.upper()
 		try:
 			BINARIES[key] = os.environ[env_key]
-		except KeyError:
+		except:
 			LOG.debug(
 				"You may use environment variable {env_key!r} to "
 				"override used binary {binary!r}.".format(

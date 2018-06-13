@@ -32,6 +32,12 @@ except ImportError:
 #
 from cgi import escape as html_escape
 
+try:
+	import sys
+	reload(sys)
+	sys.setdefaultencoding('utf-8')
+except:
+	pass
 
 def filterName(name):
 	if name is not None:

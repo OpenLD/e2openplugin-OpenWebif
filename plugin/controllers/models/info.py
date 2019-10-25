@@ -331,12 +331,16 @@ def getInfo(session = None, need_fullinfo = False):
 			pass
 
 	cpuMHz = ""
-	if getMachineBuild() in ('vusolo4k','vuultimo4k'):
+	if getMachineBuild() in ('vusolo4k','vuultimo4k','vuzero4k'):
 		cpuMHz = "   (1,5 GHz)"
 	elif getMachineBuild() in ('formuler1tc','formuler1', 'triplex', 'tiviaraplus'):
 		cpuMHz = "   (1,3 GHz)"
-	elif getMachineBuild() in ('vuuno4k','dm900','dm920', 'gb7252', 'dags7252','xc7439','8100s'):
+	elif getMachineBuild() in ('u51','u5','u53','u52','u5pvr','h9'):
+		cpuMHz = "   (1,6 GHz)"
+	elif getMachineBuild() in ('vuuno4kse','vuuno4k','gbquad4k','dm900','dm920','gb7252','dags7252','xc7439','8100s'):
 		cpuMHz = "   (1,7 GHz)"
+	elif getMachineBuild() in ('alien5'):
+		cpuMHz = "   (2,0 GHz)"
 	elif getMachineBuild() in ('sf5008','et13000','et1x000','hd52','hd51','sf4008','vs1500','h7'):
 		try:
 			import binascii
@@ -576,7 +580,10 @@ def getInfo(session = None, need_fullinfo = False):
 	# TODO: fstab
 
 	info['transcoding'] = False
-	if (info['model'] in ("Uno4K", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf5008', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1tc', 'gb7356', 'gb7252', 'tiviaraplus')):
+	if (info['model'] in ("Duo4K", "Uno4K", "Uno4K SE", "Ultimo4K", "Solo4K", "Solo²", "Duo²", "Solo SE", "Quad", "Quad Plus") or info['machinebuild'] in ('inihdp', 'hd2400', 'et10000', 'et13000', 'sf4008', 'sf5008', 'xpeedlx3', 'ew7356', 'dags7356', 'dags7252', 'formuler1tc', 'gb7356', 'gb7252', 'tiviaraplus')):
+		if os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TransCodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TranscodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/MultiTransCodingSetup/plugin.pyo')):
+			info['transcoding'] = True
+	elif fileExists("/proc/stb/encoder/0/bitrate"):
 		if os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TransCodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/TranscodingSetup/plugin.pyo')) or os.path.exists(eEnv.resolve('${libdir}/enigma2/python/Plugins/SystemPlugins/MultiTransCodingSetup/plugin.pyo')):
 			info['transcoding'] = True
 

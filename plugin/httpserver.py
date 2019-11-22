@@ -14,7 +14,7 @@ from Screens.MessageBox import MessageBox
 from Components.config import config
 from Tools.Directories import fileExists
 from twisted.internet import reactor, ssl
-from twisted.web import server, http, static, resource, error, version
+from twisted.web import server, http, static, resource, error
 from twisted.internet.error import CannotListenError
 
 from controllers.root import RootController
@@ -36,7 +36,7 @@ def getAllNetworks():
 	tempaddrs = []
 	# Get all IP networks
 	if fileExists('/proc/net/if_inet6'):
-		if has_ipv6 and version.major >= 12:
+		if has_ipv6:
 			proc = '/proc/net/if_inet6'
 			for line in file(proc).readlines():
 				# Skip localhost
@@ -168,7 +168,7 @@ def HttpdStart(session):
 
 		# start http webserver on configured port
 		try:
-			if has_ipv6 and fileExists('/proc/net/if_inet6') and version.major >= 12:
+			if has_ipv6 and fileExists('/proc/net/if_inet6'):
 				# use ipv6
 				listener.append( reactor.listenTCP(port, site, interface='::') )
 			else:
@@ -217,7 +217,7 @@ def HttpdStart(session):
 				sslroot = AuthResource(session, sslroot)
 				sslsite = server.Site(sslroot)
 
-				if has_ipv6 and fileExists('/proc/net/if_inet6') and version.major >= 12:
+				if has_ipv6 and fileExists('/proc/net/if_inet6'):
 					# use ipv6
 					listener.append( reactor.listenSSL(httpsPort, sslsite, context, interface='::') )
 				else:
@@ -236,7 +236,7 @@ def HttpdStart(session):
 		#Streaming requires listening on 127.0.0.1:80
 		if port != 80:
 			try:
-				if has_ipv6 and fileExists('/proc/net/if_inet6') and version.major >= 12:
+				if has_ipv6 and fileExists('/proc/net/if_inet6'):
 					# use ipv6
 					# Dear Twisted devs: Learning English, lesson 1 - interface != address
 					listener.append( reactor.listenTCP(80, site, interface='::1') )

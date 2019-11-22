@@ -24,7 +24,6 @@ from timer import TimerEntry
 from Tools.Directories import fileExists, pathExists
 from time import time, localtime, strftime
 from enigma import eDVBVolumecontrol, eServiceCenter, eServiceReference, eEnv
-from twisted.web import version
 from socket import has_ipv6, AF_INET6, AF_INET, inet_ntop, inet_pton, getaddrinfo
 from os import path
 
@@ -143,7 +142,7 @@ def getAdapterIPv6(ifname):
 	if fileExists('/proc/net/if_inet6'):
 		addr = _("IPv4-only Python/Twisted")
 
-		if has_ipv6 and version.major >= 12:
+		if has_ipv6:
 			proc = '/proc/net/if_inet6'
 			tempaddrs = []
 			for line in file(proc).readlines():
